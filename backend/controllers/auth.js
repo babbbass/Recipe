@@ -1,4 +1,4 @@
-import { User } from "../models/User"
+import User from "../models/User.js"
 import bcrypt from "bcrypt"
 
 export const register = async (req, res) => {
@@ -17,7 +17,11 @@ export const register = async (req, res) => {
       email,
       password: hashedPassword,
     })
-    res.json(newUser)
+
+    await newUser.save()
+    res
+      .status(201)
+      .json({ success: true, user: newUser, message: "User created" })
   } catch (error) {
     res.status(500).json({ error: error.message })
   }
