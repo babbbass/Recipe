@@ -1,3 +1,4 @@
+import { Link, useNavigate } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -11,12 +12,8 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Link, useNavigate } from "react-router-dom"
 
 const formSchema = z.object({
-  username: z.string().min(3, {
-    message: "Nom de l'utilisateur au moins 3 caractères.",
-  }),
   email: z.string().email("email invalid.").min(4, {
     message: "Votre adresse email doit contenir au moins 4 caractères.",
   }),
@@ -25,18 +22,18 @@ const formSchema = z.object({
   }),
 })
 
-export function SignUpForm() {
+export function SignInForm() {
   const navigate = useNavigate()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      email: "",
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await fetch("http://localhost:3000/api/auth/register", {
+      const response = await fetch("http://localhost:3000/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +42,9 @@ export function SignUpForm() {
       })
 
       if (response.ok) {
-        navigate("/connexion")
+        const data = await response.json()
+        localStorage.setItem("token", data.token)
+        navigate("/")
       }
     } catch (error) {
       console.log(error)
@@ -56,19 +55,6 @@ export function SignUpForm() {
     <>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-          <FormField
-            control={form.control}
-            name='username'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder='' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name='email'
@@ -93,11 +79,12 @@ export function SignUpForm() {
               </FormItem>
             )}
           />
-          <Button type='submit'>{`S'inscrire`}</Button>
+          <Button type='submit'>Se connecter</Button>
         </form>
       </Form>
       <p>
-        Tu as déja un compte ? <Link to='/connexion'>Se connecter</Link>
+        Tu n'as pas encore de compte ?{" "}
+        <Link to='/inscription'>S'enregistrer</Link>
       </p>
     </>
   )
