@@ -5,8 +5,8 @@ import { connectDB } from "./db/db.js"
 
 const app = express()
 app.use(cors())
-
-app.use("/api/signup", authRouter)
+app.use(express.json())
+app.use("/api/auth", authRouter)
 
 app.listen(3000, () => {
   connectDB()
