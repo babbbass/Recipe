@@ -1,4 +1,3 @@
-import { Link, useNavigate } from "react-router-dom"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -11,56 +10,58 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useNavigate } from "react-router-dom"
 
 const formSchema = z.object({
-  email: z.string().email("email invalid.").min(4, {
-    message: "Votre adresse email doit contenir au moins 4 caractères.",
+  name: z.string().min(3, {
+    message: "Le nom de la recette doit contenir au moins 3 caractères.",
   }),
-  password: z.string().min(5, {
-    message: "Votre mot de passe doit contenir au moins 5 caractères.",
+  description: z.string().min(10, {
+    message: "Les ingrédients doivent contenir au moins 3 caractères.",
   }),
 })
 
-export function SignInForm() {
+export function AddRecipe() {
   const navigate = useNavigate()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      name: "",
     },
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values)
     try {
-      const response = await fetch("http://localhost:3000/api/auth/login", {
+      const response = await fetch("http://localhost:3000/api/recipe/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(values),
       })
 
       if (response.ok) {
         const data = await response.json()
-        localStorage.setItem("token", data.token)
+        console.log("recipe added", data)
         navigate("/")
       }
     } catch (error) {
       console.log(error)
     }
   }
-
   return (
-    <>
+    <div className='fixed inset-0 bg-gray-900/50 bg-opacity-75 flex flex-col items-center justify-center'>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
           <FormField
             control={form.control}
-            name='email'
+            name='name'
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder='email' {...field} />
+                  <Input placeholder='nom de votre recette' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -68,23 +69,19 @@ export function SignInForm() {
           />
           <FormField
             control={form.control}
-            name='password'
+            name='description'
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input placeholder='mot de passe' {...field} />
+                  <Input placeholder='Entrez vos ingrédients' {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type='submit'>Se connecter</Button>
+          <Button type='submit'>Ajouter ma recette</Button>
         </form>
       </Form>
-      <p>
-        Tu n'as pas encore de compte ?{" "}
-        <Link to='/inscription'>S'enregistrer</Link>
-      </p>
-    </>
+    </div>
   )
 }
