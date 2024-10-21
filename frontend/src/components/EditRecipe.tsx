@@ -41,11 +41,9 @@ export function EditRecipe({ recipe, displayModal, refetch }: EditRecipeProps) {
     },
   })
 
-  async function deleteRecipe(id: string) {}
-
   async function createRecipe(recipe: any) {
     try {
-      const response = await fetch("http://localhost:3001/api/recipes/create", {
+      const response = await fetch("http://localhost:3000/api/recipes/create", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

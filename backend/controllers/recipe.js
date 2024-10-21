@@ -47,3 +47,23 @@ export const updateRecipe = async (req, res) => {
       .json({ success: false, message: "Internal server error in addRecipe" })
   }
 }
+
+export const deleteRecipe = async (req, res) => {
+  try {
+    const { id } = req.params
+    const recipeUpdated = await Recipe.findByIdAndDelete(id)
+    if (!recipeUpdated) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Delete - Recipe not found" })
+    }
+    res
+      .status(201)
+      .json({ success: true, message: "Recipe deleted", recipeUpdated })
+  } catch (error) {
+    console.log(error)
+    res
+      .status(500)
+      .json({ success: false, message: "Internal server error in addRecipe" })
+  }
+}

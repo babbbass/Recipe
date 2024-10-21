@@ -3,9 +3,33 @@ import { FilePenLine, Trash } from "lucide-react"
 
 type CardRecipeProps = {
   recipe: any
-  editRecipe: any
+  editRecipe: (recipe: any) => void
+  refetch: () => void
 }
-export function CardRecipe({ recipe, editRecipe }: CardRecipeProps) {
+
+async function deleteRecipe(id: string, refetch: () => void) {
+  console.log(id)
+  try {
+    const response = await fetch(
+      `http://localhost:3000/api/recipes/delete/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      }
+    )
+
+    if (response.ok) {
+      console.log("Recipe deleted")
+      refetch()
+      const data = await response.json()
+    }
+  } catch (error) {
+    console.log(error)
+  }
+}
+export function CardRecipe({ recipe, editRecipe, refetch }: CardRecipeProps) {
   return (
     <Card key={recipe._id} className='flex flex-col pt-2 cursor-pointer'>
       <CardContent className='gap-2 justify-center pb-2'>
@@ -16,7 +40,10 @@ export function CardRecipe({ recipe, editRecipe }: CardRecipeProps) {
             onClick={() => editRecipe(recipe)}
             className='w-4 h-4 font-bold cursor-pointer text-purple-600'
           />
-          <Trash className='w-4 h-4 text-red-500 font-bold cursor-pointer' />
+          <Trash
+            onClick={() => deleteRecipe(recipe._id, refetch)}
+            className='w-4 h-4 text-red-500 font-bold cursor-pointer'
+          />
         </div>
       </CardContent>
     </Card>

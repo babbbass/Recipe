@@ -37,6 +37,7 @@ export function Recipes() {
               key={recipe._id}
               recipe={recipe}
               editRecipe={editRecipe}
+              refetch={refetch}
             />
           ))}
           {showModalRecipe && (
