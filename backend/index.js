@@ -10,7 +10,7 @@ app.use(express.json())
 app.use("/api/auth", authRouter)
 app.use("/api/recipes", recipeRouter)
 
-app.listen(3001, () => {
+app.listen(3000, () => {
   connectDB()
-  console.log("Server running on port 3001")
+  console.log("Server running on port 3000")
 })

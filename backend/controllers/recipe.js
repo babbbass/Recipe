@@ -26,3 +26,24 @@ export const addRecipe = async (req, res) => {
       .json({ success: false, message: "Internal server error in addRecipe" })
   }
 }
+export const updateRecipe = async (req, res) => {
+  try {
+    const { id, ...rest } = req.body
+    const recipeUpdated = await Recipe.findByIdAndUpdate(id, rest, {
+      new: true,
+    })
+    if (!recipeUpdated) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Recipe not found" })
+    }
+    res
+      .status(201)
+      .json({ success: true, message: "Recipe updated", recipeUpdated })
+  } catch (error) {
+    console.log(error)
+    res
+      .status(500)
+      .json({ success: false, message: "Internal server error in addRecipe" })
+  }
+}
