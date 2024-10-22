@@ -11,6 +11,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useUserStore } from "@/stores/user.store"
 
 const formSchema = z.object({
   email: z.string().email("email invalid.").min(4, {
@@ -22,6 +23,7 @@ const formSchema = z.object({
 })
 
 export function SignInForm() {
+  const { setUser } = useUserStore()
   const navigate = useNavigate()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -42,7 +44,9 @@ export function SignInForm() {
 
       if (response.ok) {
         const data = await response.json()
+        setUser(data.user)
         localStorage.setItem("token", data.token)
+        localStorage.setItem("name", data.user.user)
         navigate("/")
       }
     } catch (error) {
