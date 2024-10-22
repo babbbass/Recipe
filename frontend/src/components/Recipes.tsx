@@ -2,6 +2,7 @@ import { EditRecipe } from "./EditRecipe"
 import { useState } from "react"
 import { useQuery } from "@tanstack/react-query"
 import { CardRecipe } from "./CardRecipe"
+import { Plus } from "lucide-react"
 
 export const fetchRecipes = async () => {
   const response = await fetch("http://localhost:3000/api/recipes")
@@ -15,6 +16,7 @@ type RecipeProps = {
   _id: string
 }
 export function Recipes() {
+  const [showModal, setShowModal] = useState(false)
   const { data, isPending, error, refetch } = useQuery({
     queryKey: ["recipes"],
     queryFn: fetchRecipes,
@@ -48,6 +50,16 @@ export function Recipes() {
             />
           )}
         </div>
+      )}
+      <div
+        className='fixed bottom-14 right-8 rounded-full p-4 bg-purple-600 text-white hover:bg-blue-500/10 hover:cursor-pointer hover:text-blue-500'
+        onClick={() => setShowModal(true)}
+      >
+        <Plus className='font-bold w-10 h-10' />
+      </div>
+
+      {showModal && (
+        <EditRecipe displayModal={setShowModal} refetch={refetch} />
       )}
     </>
   )

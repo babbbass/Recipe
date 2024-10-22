@@ -1,3 +1,4 @@
+import { toast } from "react-toastify"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -17,12 +18,11 @@ const formSchema = z.object({
     message: "Le nom de la recette doit contenir au moins 3 caractères.",
   }),
   description: z.string().min(10, {
-    message: "Les ingrédients doivent contenir au moins 3 caractères.",
+    message: "Les ingrédients doivent contenir au moins 10 caractères.",
   }),
 })
 
 type EditRecipeProps = {
-  editMode?: boolean
   displayModal: (v: boolean) => void
   recipe?: {
     name: string
@@ -53,7 +53,8 @@ export function EditRecipe({ recipe, displayModal, refetch }: EditRecipeProps) {
       })
 
       if (response.ok) {
-        const data = await response.json()
+        toast.success("Votre recette a bien été ajoutée")
+        refetch()
       }
     } catch (error) {
       console.log(error)
@@ -72,7 +73,7 @@ export function EditRecipe({ recipe, displayModal, refetch }: EditRecipeProps) {
       })
       if (response.ok) {
         const data = await response.json()
-        console.log("recipe updated", data)
+        toast.success("Votre recette modifiée avec succes")
         refetch()
         return data.recipeUpdated
       }
@@ -84,8 +85,7 @@ export function EditRecipe({ recipe, displayModal, refetch }: EditRecipeProps) {
     displayModal(false)
     if (recipe) {
       const updatedRecipe = { id: recipe?._id, ...values }
-      //editRecipe(updatedRecipe)
-      const recipeUpdated = await updateRecipe(updatedRecipe)
+      updateRecipe(updatedRecipe)
     } else {
       createRecipe(values)
     }

@@ -3,6 +3,8 @@ import { Home } from "./pages/Home"
 import { SignIn } from "./pages/Signin"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 const queryClient = new QueryClient()
 function App() {
@@ -14,6 +16,7 @@ function App() {
           <Route path='/inscription' element={<SignUp />}></Route>
           <Route path='/connexion' element={<SignIn />}></Route>
         </Routes>
+        <ToastContainer />
       </BrowserRouter>
     </QueryClientProvider>
   )
