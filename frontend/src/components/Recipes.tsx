@@ -33,7 +33,7 @@ export function Recipes() {
   return (
     <>
       {data && (
-        <div className='flex gap-4 p-4'>
+        <div className='flex gap-2 px-2 py-4 flex-wrap justify-center'>
           {data.recipes.map((recipe: RecipeProps) => (
             <CardRecipe
               key={recipe._id}

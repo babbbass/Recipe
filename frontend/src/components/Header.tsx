@@ -9,7 +9,7 @@ export function Header() {
   return (
     <header className='p-4 bg-purple-600 text-yellow-500 shadow w-full '>
       <nav className='flex justify-between items-center'>
-        <Link to='/' className='font-bold text-2xl'>
+        <Link to='/' className='font-bold text-lg md:text-2xl'>
           Mes recettes
         </Link>
         <div className='flex gap-2 items-center'>

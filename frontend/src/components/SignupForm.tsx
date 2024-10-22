@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Link, useNavigate } from "react-router-dom"
+import { Card, CardContent } from "./ui/card"
 
 const formSchema = z.object({
   username: z.string().min(3, {
@@ -53,52 +54,62 @@ export function SignUpForm() {
   }
 
   return (
-    <>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
-          <FormField
-            control={form.control}
-            name='username'
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input placeholder='' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='email'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder='email' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name='password'
-            render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input placeholder='mot de passe' {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type='submit'>{`S'inscrire`}</Button>
-        </form>
-      </Form>
-      <p>
-        Tu as déja un compte ? <Link to='/connexion'>Se connecter</Link>
-      </p>
-    </>
+    <Card className='w-full h-1/3 sm:w-2/3 md:w-1/3 max-h-72'>
+      <CardContent className='text-center p-2 py-4 flex flex-col justify-between h-full'>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+            <FormField
+              control={form.control}
+              name='username'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder='nom utilisateur....' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='email'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder='email' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name='password'
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder='mot de passe' {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              type='submit'
+              className='md:w-1/3 bg-purple-600 hover:bg-purple-700/10 hover:text-purple-600 transition-all'
+            >{`S'inscrire`}</Button>
+          </form>
+        </Form>
+        <p className='text-sm mt-4'>
+          Tu as déja un compte ?{" "}
+          <Link
+            to='/connexion'
+            className='text-purple-600 font-medium hover:bg-purple-700/10 hover:p-2 rounded-xl'
+          >
+            Se connecter
+          </Link>
+        </p>
+      </CardContent>
+    </Card>
   )
 }

@@ -4,7 +4,6 @@ import { Recipes } from "@/components/Recipes"
 export function Home() {
   return (
     <>
-      <Header />
       <Recipes />
     </>
   )
