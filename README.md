@@ -1,0 +1,4 @@
+- cd frontend pnpm install
+- pnpm run dev
+- cd backend pnpm install
+- pnpm run start

@@ -1,6 +1,6 @@
 import { toast } from "react-toastify"
 import { Card, CardContent } from "./ui/card"
-import { FilePenLine, Trash } from "lucide-react"
+import { FilePenLine, Trash, Star } from "lucide-react"
 
 type CardRecipeProps = {
   recipe: any
@@ -35,7 +35,12 @@ export function CardRecipe({ recipe, editRecipe, refetch }: CardRecipeProps) {
       className='w-[48%] md:w-[32%] flex flex-col cursor-pointer min-h-[200px] hover:border-purple-600 hover:shadow-xl hover:shadow-purple-500/20'
     >
       <CardContent className='flex flex-1 flex-col justify-center pb-2 px-0 italic'>
-        <h3 className='text-lg font-bold text-center p-1 '>{recipe.name}</h3>
+        <div className='flex items-center w-full pr-2 md:pr-4'>
+          <h3 className='text-lg font-bold text-center w-full'>
+            {recipe.name}
+          </h3>
+          <Star className='w-4 h-4  text-purple-600 font-bold cursor-pointer' />
+        </div>
         <div className='h-1 border-b border-purple-600 mb-4' />
         <p className='text-sm px-2 md:px-5'>{recipe.description}</p>
         <div className='flex gap-2 h-full items-end justify-end mt-4 flex-1 mr-2 md:mr-4'>

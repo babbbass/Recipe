@@ -28,8 +28,18 @@ export function Recipes() {
     setShowModalRecipe(true)
     setMyRecipe(recipe)
   }
-  if (isPending) return <div>Loading...</div>
-  if (error) return <p>Erreur : {error.message}</p>
+  if (isPending)
+    return (
+      <div className='flex items-center justify-center h-screen'>
+        Loading...
+      </div>
+    )
+  if (error)
+    return (
+      <div className='flex items-center justify-center h-screen'>
+        <p>Erreur : {error.message}</p>
+      </div>
+    )
   return (
     <>
       {data && (
